@@ -26,7 +26,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "validate": "npm run type-check && npm run lint:strict && npm run format:check && npm run test",
-    "prepare": "husky install"
+    "prepare": "husky install || true"
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
@@ -39,6 +39,7 @@
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "sql.js": "^1.14.1",
+    "tsx": "^4.21.0",
     "uuid": "^14.0.0",
     "zustand": "^5.0.13"
   },
@@ -74,7 +75,6 @@
     "playwright-core": "^1.60.0",
     "prettier": "^3.8.3",
     "tailwindcss": "^4.1.14",
-    "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.3",
     "vitest": "^4.1.6"
