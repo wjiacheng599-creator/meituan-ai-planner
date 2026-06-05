@@ -3,6 +3,9 @@ import type { Activity, AIStoryContent, CopilotMessage, Plan, WeatherInfo } from
 import type { PersonProfile } from '../types';
 import type { PlannerTaskState } from '../types';
 
+const API_BASE =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) || '';
+
 export interface ServerTaskSessionSummary {
   id: string;
   title: string;
@@ -83,14 +86,14 @@ export async function ensureAuth(): Promise<void> {
 
   authPromise = (async () => {
     try {
-      const res = await fetch('/api/auth/me', { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/api/auth/me`, { credentials: 'include' });
       const data = await res.json();
       if (data.authenticated) {
         authEnsured = true;
         return;
       }
       // 未认证，尝试注册
-      const regRes = await fetch('/api/auth/register', {
+      const regRes = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -119,7 +122,7 @@ async function requestJson<T>(
   input: string,
   init?: RequestInit & { signal?: AbortSignal }
 ): Promise<T> {
-  const url = input;
+  const url = `${API_BASE}${input}`;
   const options = init || {};
 
   // [PERF-OPT] Deduplicate GET requests
@@ -192,7 +195,7 @@ export async function generatePlanStream(
   sessionId?: string | null
 ): Promise<GeneratePlanPayload> {
   await ensureAuth();
-  const url = `/api/plans/generate?stream=true`;
+  const url = `${API_BASE}/api/plans/generate?stream=true`;
   const body = JSON.stringify({ query, city, sessionId: sessionId || undefined });
 
   const res = await fetch(url, {
