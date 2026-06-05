@@ -55,7 +55,7 @@ import { createFliggyController } from './controllers/fliggyController';
 import { executeAgentOnServer } from './services/agentExecute';
 
 const app = express();
-const port = Number(process.env.API_PORT || 8788);
+const port = Number(process.env.PORT || process.env.API_PORT || 8788);
 const USER_COOKIE_NAME = 'mt_planner_uid';
 
 // ── Initialize layers ─────────────────────────────────────────────────────────
@@ -1022,6 +1022,6 @@ app.post('/api/executions', aiGenerateLimiter, async (req, res) => {
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-app.listen(port, () => {
-  process.stdout.write(`[api] listening on http://127.0.0.1:${port}\n`);
+app.listen(port, '0.0.0.0', () => {
+  process.stdout.write(`[api] listening on http://0.0.0.0:${port}\n`);
 });
