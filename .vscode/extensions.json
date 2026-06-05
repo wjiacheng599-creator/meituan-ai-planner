@@ -1,0 +1,30 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "ms-vscode.vscode-typescript-next",
+    "bradlc.vscode-tailwindcss",
+    "ms-playwright.playwright",
+    "vitest.explorer",
+    "csstools.postcss",
+    "stylelint.vscode-stylelint",
+    "mikestead.dotenv",
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+    "streetsidesoftware.code-spell-checker",
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "usernamehw.errorlens",
+    "wayou.vscode-todo-highlight",
+    "gruntfuggly.todo-tree",
+    "pkief.material-icon-theme",
+    "zhuangtongfa.material-theme",
+    "ms-vscode.live-server",
+    "humao.rest-client",
+    "rangav.vscode-thunder-client"
+  ],
+  "unwantedRecommendations": [
+    "hookyqr.beautify",
+    "vscodevim.vim"
+  ]
+}

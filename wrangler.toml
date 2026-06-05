@@ -1,0 +1,13 @@
+name = "meituan-ai-planner-competition"
+main = "worker/index.ts"
+compatibility_date = "2026-05-10"
+
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "meituan-planner"
+database_id = "replace-with-your-d1-database-id"
+
+[vars]
+APP_ENV = "development"

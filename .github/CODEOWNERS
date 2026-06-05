@@ -1,0 +1,39 @@
+# 代码所有者配置
+# 这个文件定义了代码库中不同目录和文件的所有者
+# 当这些文件被修改时，相应的所有者会自动被请求审查
+
+# 默认所有者
+* @team-lead
+
+# 前端代码
+/src/components/ @frontend-team
+/src/hooks/ @frontend-team
+/src/store/ @frontend-team
+/src/services/ @backend-team @frontend-team
+/src/styles/ @frontend-team
+
+# 后端代码
+/server/ @backend-team
+/worker/ @backend-team
+
+# 测试代码
+/src/test/ @qa-team
+*.test.ts @qa-team
+*.test.tsx @qa-team
+*.spec.ts @qa-team
+
+# 配置文件
+/.github/ @devops-team
+/vite.config.ts @devops-team
+/vitest.config.ts @devops-team
+/eslint.config.js @devops-team
+/tsconfig.json @devops-team
+/package.json @devops-team
+
+# 文档
+/docs/ @tech-writer @team-lead
+*.md @tech-writer
+
+# 安全相关
+/src/services/ai.ts @security-team @backend-team
+/server/api/ @security-team @backend-team

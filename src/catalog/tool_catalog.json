@@ -1,0 +1,652 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Function Call Tool Catalog",
+  "description": "美团AI规划器 Agent 工具目录，定义所有可用于任务执行的功能调用工具",
+  "type": "object",
+  "properties": {
+    "tools": {
+      "type": "array",
+      "description": "所有可用工具的定义列表",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "工具的唯一标识名称"
+          },
+          "description": {
+            "type": "string",
+            "description": "工具的功能描述，说明何时使用该工具"
+          },
+          "parameters": {
+            "type": "object",
+            "description": "工具的输入参数定义",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "object"
+              },
+              "properties": {
+                "type": "object",
+                "description": "参数的具体字段定义"
+              },
+              "required": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "必填参数列表"
+              }
+            },
+            "required": ["type", "properties", "required"]
+          },
+          "returns": {
+            "type": "object",
+            "description": "工具返回值的结构定义",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "object"
+              },
+              "properties": {
+                "type": "object",
+                "description": "返回值字段定义"
+              }
+            },
+            "required": ["type", "properties"]
+          }
+        },
+        "required": ["name", "description", "parameters", "returns"]
+      }
+    }
+  },
+  "required": ["tools"],
+  "tools": [
+    {
+      "name": "search_restaurant",
+      "description": "搜索餐厅/美食商家，获取评分、地址、电话、排队情况等实时信息。优先用于餐饮类活动的商家查询。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "餐厅或美食名称搜索关键词，如\"海底捞火锅\""
+          },
+          "city": {
+            "type": "string",
+            "description": "所在城市，如\"北京\""
+          },
+          "budget": {
+            "type": "number",
+            "description": "人均预算上限，单位：元"
+          },
+          "cuisine": {
+            "type": "string",
+            "description": "菜系类型，如\"川菜\"、\"日料\"、\"火锅\"等"
+          },
+          "radius": {
+            "type": "number",
+            "description": "搜索半径范围，单位：米"
+          }
+        },
+        "required": ["query", "city"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "rating": {
+                "type": "number",
+                "description": "餐厅评分（0-5.0）"
+              },
+              "waitTime": {
+                "type": "number",
+                "description": "预计等待时间（分钟）"
+              },
+              "seatsAvailable": {
+                "type": "boolean",
+                "description": "当前是否有空位"
+              },
+              "phone": {
+                "type": "string",
+                "description": "餐厅联系电话"
+              },
+              "address": {
+                "type": "string",
+                "description": "餐厅详细地址"
+              },
+              "poiName": {
+                "type": "string",
+                "description": "POI 名称"
+              },
+              "avgCost": {
+                "type": "number",
+                "description": "人均消费（元）"
+              },
+              "location": {
+                "type": "string",
+                "description": "经纬度坐标"
+              },
+              "source": {
+                "type": "string",
+                "description": "数据来源（高德地图/Mock）"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "check_availability",
+      "description": "检查餐厅在指定时间段是否有空位可用。在预订前应先调用此工具确认可用性。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "restaurantId": {
+            "type": "string",
+            "description": "餐厅唯一标识符或名称"
+          },
+          "date": {
+            "type": "string",
+            "description": "期望日期，格式 YYYY-MM-DD"
+          },
+          "time": {
+            "type": "string",
+            "description": "期望时间段，如\"14:30-16:30\""
+          },
+          "partySize": {
+            "type": "number",
+            "description": "用餐人数"
+          }
+        },
+        "required": ["restaurantId", "time", "partySize"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "tableType": {
+                "type": "string",
+                "description": "可用桌型（大桌/小桌）"
+              },
+              "location": {
+                "type": "string",
+                "description": "座位位置偏好（如靠窗）"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "make_reservation",
+      "description": "预订餐厅座位。需要先通过 check_availability 确认有空位后再调用。此操作为非幂等操作，重复调用会产生多笔预订。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "restaurantId": {
+            "type": "string",
+            "description": "餐厅唯一标识符或名称"
+          },
+          "date": {
+            "type": "string",
+            "description": "预订日期，格式 YYYY-MM-DD"
+          },
+          "time": {
+            "type": "string",
+            "description": "预订时间段，如\"14:30-16:30\""
+          },
+          "partySize": {
+            "type": "number",
+            "description": "用餐人数"
+          },
+          "contactName": {
+            "type": "string",
+            "description": "联系人姓名"
+          },
+          "contactPhone": {
+            "type": "string",
+            "description": "联系电话，格式如\"138****8888\""
+          }
+        },
+        "required": ["restaurantId", "time", "partySize", "contactPhone"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "confirmCode": {
+                "type": "string",
+                "description": "预订确认码"
+              },
+              "restaurant": {
+                "type": "string",
+                "description": "餐厅名称"
+              },
+              "time": {
+                "type": "string",
+                "description": "预订时间"
+              },
+              "people": {
+                "type": "number",
+                "description": "预订人数"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "check_queue",
+      "description": "查询餐厅当前排队情况，包括排队桌数和预计等待时间。无需提前预订即可调用。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "restaurantId": {
+            "type": "string",
+            "description": "餐厅唯一标识符或名称"
+          }
+        },
+        "required": ["restaurantId"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "queueLength": {
+                "type": "number",
+                "description": "当前排队桌数"
+              },
+              "waitMinutes": {
+                "type": "number",
+                "description": "预计等待时间（分钟）"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "join_queue",
+      "description": "在线取号排队。当餐厅当前无空位时，可通过此工具远程取号，无需到店。此操作为非幂等操作，重复调用会生成多个排队号。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "restaurantId": {
+            "type": "string",
+            "description": "餐厅唯一标识符或名称"
+          },
+          "partySize": {
+            "type": "number",
+            "description": "用餐人数"
+          },
+          "contactPhone": {
+            "type": "string",
+            "description": "联系电话，用于接收排队提醒"
+          }
+        },
+        "required": ["restaurantId", "partySize", "contactPhone"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "queueNumber": {
+                "type": "string",
+                "description": "排队号码，如\"A023\""
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "book_activity",
+      "description": "预约非餐饮类活动（如景点门票、展览、体验项目、演出等）。此操作为非幂等操作。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "activityId": {
+            "type": "string",
+            "description": "活动/景点唯一标识符或名称"
+          },
+          "date": {
+            "type": "string",
+            "description": "预约日期，格式 YYYY-MM-DD"
+          },
+          "ticketCount": {
+            "type": "number",
+            "description": "预约票数/参与人数"
+          },
+          "contactName": {
+            "type": "string",
+            "description": "联系人姓名"
+          },
+          "contactPhone": {
+            "type": "string",
+            "description": "联系电话"
+          }
+        },
+        "required": ["activityId", "date", "ticketCount", "contactPhone"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "ticketId": {
+                "type": "string",
+                "description": "票券 ID"
+              },
+              "activity": {
+                "type": "string",
+                "description": "活动名称"
+              },
+              "time": {
+                "type": "string",
+                "description": "预约时间"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "order_delivery",
+      "description": "下单外卖配送，将餐品/物品配送至指定地址。此操作为非幂等操作。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "restaurantId": {
+            "type": "string",
+            "description": "餐厅/商家唯一标识符或名称"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "商品名称"
+                },
+                "quantity": {
+                  "type": "number",
+                  "description": "数量"
+                },
+                "price": {
+                  "type": "number",
+                  "description": "单价（元）"
+                }
+              },
+              "required": ["name", "quantity"]
+            },
+            "description": "配送物品/餐品列表"
+          },
+          "address": {
+            "type": "string",
+            "description": "配送目标地址"
+          },
+          "contactPhone": {
+            "type": "string",
+            "description": "收件人联系电话"
+          }
+        },
+        "required": ["restaurantId", "items", "address", "contactPhone"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "orderId": {
+                "type": "string",
+                "description": "配送订单 ID"
+              },
+              "item": {
+                "type": "string",
+                "description": "配送物品名称"
+              },
+              "deliverTo": {
+                "type": "string",
+                "description": "配送地址"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "dispatch_taxi",
+      "description": "为当前行程段预约车辆或立即叫车。适合多人出行、老人/儿童同行等场景。支持指定车型和预估费用。此操作为非幂等操作。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "origin": {
+            "type": "string",
+            "description": "出发地点名称"
+          },
+          "destination": {
+            "type": "string",
+            "description": "目的地名称"
+          },
+          "departureTime": {
+            "type": "string",
+            "description": "计划出发时间，如\"14:30\""
+          }
+        },
+        "required": ["origin", "destination", "departureTime"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "orderId": {
+                "type": "string",
+                "description": "叫车订单 ID"
+              },
+              "from": {
+                "type": "string",
+                "description": "出发地点"
+              },
+              "to": {
+                "type": "string",
+                "description": "目的地"
+              },
+              "people": {
+                "type": "number",
+                "description": "乘车人数"
+              },
+              "tierLabel": {
+                "type": "string",
+                "description": "车型标签（快车/舒适型/六座商务等）"
+              },
+              "estimatedFare": {
+                "type": "number",
+                "description": "预估车费（元）"
+              },
+              "estimatedWaitMinutes": {
+                "type": "number",
+                "description": "预计等待时间（分钟）"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "calculate_route",
+      "description": "计算多个地点之间的最优出行路线和时间。支持多点路径规划，返回总耗时、总距离以及各段详情。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "origin": {
+            "type": "string",
+            "description": "起点名称"
+          },
+          "destination": {
+            "type": "string",
+            "description": "终点名称"
+          },
+          "waypoints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "途经点名称列表，按访问顺序排列"
+          },
+          "travelMode": {
+            "type": "string",
+            "enum": ["driving", "walking", "transit", "taxi"],
+            "description": "出行方式：driving（驾车）、walking（步行）、transit（公共交通）、taxi（打车）"
+          }
+        },
+        "required": ["origin", "destination"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功"
+          },
+          "message": {
+            "type": "string",
+            "description": "结果描述信息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "totalTravelMinutes": {
+                "type": "number",
+                "description": "总行程时间（分钟）"
+              },
+              "totalDistance": {
+                "type": "number",
+                "description": "总行程距离（米）"
+              },
+              "optimized": {
+                "type": "boolean",
+                "description": "路线是否已优化"
+              },
+              "source": {
+                "type": "string",
+                "description": "路线数据来源"
+              },
+              "waypoints": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "途经点列表"
+              },
+              "segments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "string",
+                      "description": "段起点"
+                    },
+                    "to": {
+                      "type": "string",
+                      "description": "段终点"
+                    },
+                    "duration": {
+                      "type": "number",
+                      "description": "段耗时（分钟）"
+                    },
+                    "distance": {
+                      "type": "number",
+                      "description": "段距离（米）"
+                    }
+                  }
+                },
+                "description": "各段路线详情"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

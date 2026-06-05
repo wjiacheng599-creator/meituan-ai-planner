@@ -1,0 +1,230 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans:
+    'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', ui-sans-serif, system-ui, -apple-system,
+    sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', ui-monospace, monospace;
+}
+
+:root {
+  --app-bg: #f6f7fb;
+  --app-bg-soft: #eef2f9;
+  --app-surface: rgba(255, 255, 255, 0.82);
+  --app-card: #ffffff;
+  --app-card-soft: #f8f9fd;
+  --app-border: #e7ebf3;
+  --app-border-strong: #d9e0ec;
+  --app-ink: #141821;
+  --app-text: #606978;
+  --app-text-soft: #8b94a3;
+  --brand: #ffd84d;
+  --brand-strong: #ffc83a;
+  --brand-soft: #fff4bf;
+  --brand-ink: #3b2b00;
+  --rose-soft: #ffe7f1;
+  --rose-strong: #ffcfe2;
+  --rose-ink: #c94b86;
+  --peach-soft: #fff1e1;
+  --peach-strong: #ffe2bf;
+  --peach-ink: #d98b4c;
+  --mint-soft: #eef8f1;
+  --mint-strong: #dcf1e5;
+  --mint-ink: #2aa27a;
+  --sky-soft: #f2f5fb;
+  --sky-strong: #e7edf7;
+  --sky-ink: #6b7d98;
+  --info-soft: #edf5ff;
+  --info-ink: #4e8ef7;
+  --success-soft: #edf9f1;
+  --success-ink: #1fbf75;
+  --warning-soft: #fff0e5;
+  --warning-ink: #ff8a3d;
+  --danger-soft: #fff0f2;
+  --danger-ink: #ef5b74;
+  --shadow-card: 0 12px 36px rgba(21, 24, 33, 0.06);
+  --shadow-float: 0 16px 44px rgba(21, 24, 33, 0.1);
+  --shadow-soft: 0 8px 24px rgba(21, 24, 33, 0.05);
+
+  --color-primary: #ffd84d;
+  --color-primary-foreground: #3b2b00;
+  --color-secondary: #6b7d98;
+  --color-secondary-foreground: #ffffff;
+  --color-accent: #c94b86;
+  --color-accent-foreground: #ffffff;
+  --color-success: #1fbf75;
+  --color-success-foreground: #ffffff;
+  --color-warning: #ff8a3d;
+  --color-warning-foreground: #ffffff;
+  --color-danger: #ef5b74;
+  --color-danger-foreground: #ffffff;
+  --color-info: #4e8ef7;
+  --color-info-foreground: #ffffff;
+  --color-background: #f6f7fb;
+  --color-surface: rgba(255, 255, 255, 0.82);
+  --color-card: #ffffff;
+  --color-card-soft: #f8f9fd;
+  --color-text: #141821;
+  --color-text-secondary: #606978;
+  --color-text-tertiary: #8b94a3;
+  --color-border: #e7ebf3;
+  --color-border-strong: #d9e0ec;
+  --color-brand: #ffd84d;
+  --color-brand-strong: #ffc83a;
+  --color-brand-soft: #fff4bf;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 2px 8px rgba(21, 24, 33, 0.04);
+  --shadow-md: 0 8px 24px rgba(21, 24, 33, 0.05);
+  --shadow-lg: 0 12px 36px rgba(21, 24, 33, 0.06);
+  --shadow-xl: 0 16px 44px rgba(21, 24, 33, 0.1);
+
+  --font-sans:
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', ui-monospace, monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(circle at top left, rgba(255, 210, 227, 0.22), transparent 28%),
+    radial-gradient(circle at top right, rgba(164, 184, 216, 0.16), transparent 24%),
+    linear-gradient(180deg, #fbfcff 0%, var(--app-bg) 42%, #f4f6fb 100%);
+  color: var(--app-ink);
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app-shell {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 220, 234, 0.16), transparent 24%),
+    radial-gradient(circle at 100% 12%, rgba(178, 195, 224, 0.14), transparent 22%),
+    linear-gradient(180deg, #fbfcff 0%, var(--app-bg) 42%, #f4f6fb 100%);
+}
+
+.app-panel {
+  background: var(--app-surface);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.app-card {
+  background: var(--app-card);
+  border: 1px solid var(--app-border);
+  box-shadow: var(--shadow-card);
+}
+
+.app-card-soft {
+  background: var(--app-card-soft);
+  border: 1px solid var(--app-border);
+}
+
+.app-pill {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid var(--app-border);
+  box-shadow: var(--shadow-soft);
+}
+
+.app-btn-primary {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-strong) 100%);
+  color: var(--brand-ink);
+  box-shadow: 0 10px 24px rgba(255, 200, 58, 0.28);
+}
+
+.app-btn-dark {
+  background: var(--app-ink);
+  color: white;
+  box-shadow: 0 12px 26px rgba(20, 24, 33, 0.18);
+}
+
+.app-btn-ghost {
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--app-ink);
+  border: 1px solid var(--app-border);
+}
+
+.app-chip-soft {
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--app-text);
+  border: 1px solid var(--app-border);
+}
+
+.app-hairline {
+  background: linear-gradient(90deg, transparent, var(--app-border-strong), transparent);
+}
+
+.app-accent-ring {
+  box-shadow:
+    0 0 0 1px rgba(255, 216, 77, 0.16),
+    0 14px 34px rgba(255, 200, 58, 0.16);
+}
+
+.text-app-ink {
+  color: var(--app-ink);
+}
+
+.text-app-muted {
+  color: var(--app-text);
+}
+
+.text-app-soft {
+  color: var(--app-text-soft);
+}
+
+.amap-copyright {
+  display: none !important;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.25s ease-out;
+}

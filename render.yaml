@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: meituan-ai-planner-api
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: API_PORT
+        value: 8788
+      - key: DASHSCOPE_API_KEY
+        sync: false
+      - key: LONGCAT_API_KEY
+        sync: false
+      - key: AMAP_KEY
+        sync: false
+      - key: COOKIE_SECRET
+        generateValue: true
