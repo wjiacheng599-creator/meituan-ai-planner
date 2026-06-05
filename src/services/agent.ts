@@ -6,7 +6,6 @@ import type { ToolStatus } from './tools';
 import { readRuntimeEnv } from './runtimeEnv';
 import { retrieveKnowledgeContext } from './knowledge';
 import { LRUCache } from '../utils/lruCache';
-import { apiUrl } from './apiBase';
 
 // [PERF-OPT] RAG result cache - cache knowledge retrieval results
 const ragCache = new LRUCache<string>(200);

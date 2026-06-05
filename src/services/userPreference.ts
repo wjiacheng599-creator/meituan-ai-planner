@@ -1,7 +1,6 @@
+import { apiUrl } from "./apiBase";
 import { create } from 'zustand';
-import { apiUrl } from "./apiBase";
 import { persist } from 'zustand/middleware';
-import { apiUrl } from "./apiBase";
 import type { TravelMode } from '../types';
 
 const STORAGE_KEY = 'meituan_ai_travel_mode';

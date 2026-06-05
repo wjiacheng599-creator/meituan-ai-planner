@@ -1,3 +1,4 @@
+import { apiUrl } from "../services/apiBase";
 /**
  * useBehaviorTracking - 用户行为事件采集 hook
  *
@@ -6,7 +7,6 @@
  */
 
 import { useCallback, useRef } from 'react';
-import { apiUrl } from "./apiBase";
 
 export type BehaviorEventType =
   | 'select' // 选择活动

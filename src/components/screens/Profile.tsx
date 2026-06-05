@@ -1,7 +1,6 @@
+import { apiUrl } from "../../services/apiBase";
 import type { ReactNode } from 'react';
-import { apiUrl } from "./apiBase";
 import { useState, useEffect, useRef, Fragment, memo } from 'react';
-import { apiUrl } from "./apiBase";
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronLeft,

@@ -1,7 +1,6 @@
+import { apiUrl } from "../apiBase";
 import { getActivityImage, getFeedImage } from '../imageLibrary';
-import { apiUrl } from "./apiBase";
 import { batchFetchPOIImages } from '../poiImageService';
-import { apiUrl } from "./apiBase";
 import { generatePlanViaServer, generatePlanStream } from '../serverApi';
 import { dataSource } from '../apiAdapter';
 import { isBrowserRuntime } from '../runtimeEnv';

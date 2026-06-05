@@ -1,7 +1,6 @@
+import { API_BASE } from "../../services/apiBase";
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
-import { apiUrl } from "./apiBase";
 import { motion, AnimatePresence } from 'motion/react';
-import { apiUrl } from "./apiBase";
 import type { Plan, Activity, CopilotMessage } from '../../services/ai';
 import { chatWithCopilot, generateAlternatives } from '../../services/ai';
 import { checkTripHealth, type TripAlert } from '../../services/ai/selfHealing';

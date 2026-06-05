@@ -1,10 +1,10 @@
+import { apiUrl } from "../services/apiBase";
 /**
  * useImageRecognition — 图片识别 hook
  *
  * 提供图片选择、预览、识别功能。
  */
 import { useState, useCallback, useRef } from 'react';
-import { apiUrl } from "./apiBase";
 
 export interface ImagePreview {
   file: File;

@@ -1,3 +1,4 @@
+import { API_BASE } from "../../services/apiBase";
 /**
  * Collaborate — 多用户协作投票页面 v2
  *
@@ -8,7 +9,6 @@
  * - 投票 → AI 重新规划闭环
  */
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { apiUrl } from "./apiBase";
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronLeft,

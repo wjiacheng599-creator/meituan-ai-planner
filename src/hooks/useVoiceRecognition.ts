@@ -1,3 +1,4 @@
+import { apiUrl } from "../services/apiBase";
 /**
  * useVoiceRecognition - 双通道语音识别 hook
  *
@@ -5,7 +6,6 @@
  * "按住说话"交互：按住录音 → 松开发送 → 滑出取消。
  */
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { apiUrl } from "./apiBase";
 
 // ── Web Speech API 类型 ──
 

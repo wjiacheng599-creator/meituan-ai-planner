@@ -1,5 +1,5 @@
+import { API_BASE } from "./apiBase";
 import type { Activity } from './ai';
-import { apiUrl } from "./apiBase";
 import {
   searchPOI,
   getMockPOI,

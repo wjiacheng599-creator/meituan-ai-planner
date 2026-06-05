@@ -1,5 +1,5 @@
+import { API_BASE } from "./apiBase";
 import { readRuntimeEnv } from './runtimeEnv';
-import { apiUrl } from "./apiBase";
 
 export interface KnowledgeItem {
   id: string;

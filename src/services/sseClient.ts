@@ -1,3 +1,4 @@
+import { apiUrl } from "./apiBase";
 /**
  * SSE Client - 前端 SSE 流式连接服务
  *

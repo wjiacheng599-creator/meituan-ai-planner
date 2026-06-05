@@ -1,3 +1,4 @@
+import { apiUrl } from "../services/apiBase";
 /**
  * useAppRouterCallbacks - 收拢 AppRouter 中所有 callback handler
  *
@@ -5,7 +6,6 @@
  * 统一管理导航、保存、分享等操作，减少 prop drilling。
  */
 import { useCallback, useRef } from 'react';
-import { apiUrl } from "./apiBase";
 import type { CopilotMessage, Plan } from '../services/ai';
 import type { Post } from '../types';
 import type { AppState } from '../contexts/AppStateContext';

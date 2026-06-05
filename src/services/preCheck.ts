@@ -1,3 +1,4 @@
+import { apiUrl } from "./apiBase";
 /**
  * preCheck — 前端可用性预检适配器
  *
@@ -5,7 +6,6 @@
  */
 
 import type { FailureReason } from '../components/itinerary/BookingFailureDialog';
-import { apiUrl } from "./apiBase";
 import type { Activity } from './ai';
 
 export interface PreCheckResult {
