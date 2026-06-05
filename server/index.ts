@@ -79,14 +79,47 @@ function safeErrorMessage(error: unknown, fallback: string): string {
   return String(error);
 }
 
+const defaultAllowedOrigins = [
+  'http://localhost:4173',
+  'http://localhost:5173',
+  'http://127.0.0.1:4173',
+  'http://127.0.0.1:5173',
+  'https://meituan-ai-planner.vercel.app',
+];
+
+const configuredAllowedOrigins = [
+  process.env.FRONTEND_ORIGIN,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  process.env.CORS_ORIGINS,
+]
+  .filter(Boolean)
+  .flatMap((value) => String(value).split(','))
+  .map((value) => value.trim())
+  .filter(Boolean);
+
+const allowedOrigins = new Set([...defaultAllowedOrigins, ...configuredAllowedOrigins]);
+
+function isAllowedOrigin(origin?: string): boolean {
+  return !origin || allowedOrigins.has(origin);
+}
+
 // ── CORS ─────────────────────────────────────────────────────────────────────
-app.use((_req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (isAllowedOrigin(origin)) {
+    if (origin) {
+      res.header('Access-Control-Allow-Origin', origin);
+    }
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Expose-Headers', 'Set-Cookie');
+    res.header('Vary', 'Origin');
+  }
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Expose-Headers', 'Set-Cookie');
-  if (_req.method === 'OPTIONS') { res.sendStatus(204); return; }
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(isAllowedOrigin(origin) ? 204 : 403);
+    return;
+  }
   next();
 });
 
@@ -109,10 +142,12 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const userId = `user_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     const signed = signUserId(userId);
+    const isProduction = process.env.NODE_ENV === 'production';
     res.cookie(USER_COOKIE_NAME, signed, {
       httpOnly: true,
       maxAge: 365 * 24 * 60 * 60 * 1000,
-      sameSite: 'lax',
+      sameSite: isProduction ? 'none' : 'lax',
+      secure: isProduction,
     });
     res.json({ userId, success: true });
   } catch (error) {

@@ -145,7 +145,7 @@ interface UseHomeSessionReturn {
   activeSessionPlan: Plan | null;
   createEmptySession: () => TaskSession;
   startNewTaskSession: () => void;
-  persistActiveSession: (patch: Partial<TaskSession>) => void;
+  persistActiveSession: (patch: Partial<TaskSession>, sessionId?: string | null) => void;
   resetComposerState: (nextSessionId: string | null) => void;
   // 当前会话的编辑器状态（供 reset 和 snapshot 使用）
   getEditorState: () => {
@@ -292,8 +292,8 @@ export function useHomeSession(params: UseHomeSessionParams): UseHomeSessionRetu
   );
 
   const persistActiveSession = useCallback(
-    (patch: Partial<TaskSession>) => {
-      const currentSessionId = activeSessionIdRef.current;
+    (patch: Partial<TaskSession>, sessionId?: string | null) => {
+      const currentSessionId = sessionId || activeSessionIdRef.current;
       if (!currentSessionId) return;
       onTaskSessionsChange((prev) => {
         const safePrev = Array.isArray(prev) ? prev : [];
@@ -308,21 +308,23 @@ export function useHomeSession(params: UseHomeSessionParams): UseHomeSessionRetu
   const startNewTaskSession = useCallback(() => {
     const currentSession =
       safeTaskSessions.find((s) => s.id === activeSessionIdRef.current) || null;
-    const editorState = getEditorState();
+    const editorState = editorStateRef.current;
 
-    const snapshot = buildSessionSnapshot({
-      session: currentSession,
-      messages: editorState.messages,
-      query: editorState.query,
-      selectedProfileIds: editorState.selectedProfileIds,
-      timePref: editorState.timePref,
-      targetType: editorState.targetType,
-      collabStrategy: editorState.collabStrategy,
-      tieBreaker: editorState.tieBreaker,
-      memberVotes: editorState.memberVotes,
-      memberAvoids: editorState.memberAvoids,
-      tempProfiles: editorState.tempProfiles,
-    });
+    const snapshot = editorState
+      ? buildSessionSnapshot({
+          session: currentSession,
+          messages: editorState.messages,
+          query: editorState.query,
+          selectedProfileIds: editorState.selectedProfileIds,
+          timePref: editorState.timePref,
+          targetType: editorState.targetType,
+          collabStrategy: editorState.collabStrategy,
+          tieBreaker: editorState.tieBreaker,
+          memberVotes: editorState.memberVotes,
+          memberAvoids: editorState.memberAvoids,
+          tempProfiles: editorState.tempProfiles,
+        })
+      : null;
     const next = createEmptySession();
     onTaskSessionsChange((prev) => {
       const safePrev = Array.isArray(prev) ? prev : [];

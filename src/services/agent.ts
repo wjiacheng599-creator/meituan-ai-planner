@@ -5,6 +5,7 @@ import { toolSchemas, executeToolByName, type ToolResult } from './tools';
 import type { ToolStatus } from './tools';
 import { readRuntimeEnv } from './runtimeEnv';
 import { retrieveKnowledgeContext } from './knowledge';
+import { apiUrl } from './apiBase';
 import { LRUCache } from '../utils/lruCache';
 
 // [PERF-OPT] RAG result cache - cache knowledge retrieval results
