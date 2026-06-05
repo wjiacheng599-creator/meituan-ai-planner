@@ -35,7 +35,7 @@ export function startSSEStream(options: SSEOptions): () => void {
 
   (async () => {
     try {
-      const response = await fetch('/api/proxy/dashscope/stream', {
+      const response = await fetch(apiUrl('/api/proxy/dashscope/stream'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

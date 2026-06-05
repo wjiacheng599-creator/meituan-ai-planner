@@ -1,4 +1,5 @@
 import { readRuntimeEnv } from './runtimeEnv';
+import { apiUrl } from "./apiBase";
 
 export interface KnowledgeItem {
   id: string;
@@ -25,7 +26,7 @@ export async function searchKnowledge(
       ...(city ? { city } : {}),
       limit: String(limit),
     });
-    const response = await fetch(`/api/knowledge/search?${params}`);
+    const response = await fetch(`${API_BASE}/api/knowledge/search?${params}`);
 
     if (!response.ok) {
       console.error('[Knowledge] Search failed:', response.status);

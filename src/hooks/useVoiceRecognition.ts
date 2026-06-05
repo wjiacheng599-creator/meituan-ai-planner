@@ -5,6 +5,7 @@
  * "按住说话"交互：按住录音 → 松开发送 → 滑出取消。
  */
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { apiUrl } from "./apiBase";
 
 // ── Web Speech API 类型 ──
 
@@ -46,7 +47,7 @@ function getWebSpeechRecognition(): SpeechRecognitionConstructor | null {
 // ── 服务端 ASR 调用 ──
 
 async function recognizeViaServer(audioBlob: Blob): Promise<string> {
-  const resp = await fetch('/api/speech/recognize', {
+  const resp = await fetch(apiUrl('/api/speech/recognize'), {
     method: 'POST',
     headers: { 'Content-Type': audioBlob.type || 'audio/webm' },
     body: audioBlob,

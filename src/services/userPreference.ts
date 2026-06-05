@@ -1,5 +1,7 @@
 import { create } from 'zustand';
+import { apiUrl } from "./apiBase";
 import { persist } from 'zustand/middleware';
+import { apiUrl } from "./apiBase";
 import type { TravelMode } from '../types';
 
 const STORAGE_KEY = 'meituan_ai_travel_mode';
@@ -59,7 +61,7 @@ export function useTravelMode() {
 
 export async function getUserPreferences(): Promise<UserPreference | null> {
   try {
-    const response = await fetch('/api/preferences', { credentials: 'include' });
+    const response = await fetch(apiUrl('/api/preferences'), { credentials: 'include' });
     if (!response.ok) return null;
     const data = await response.json();
     return data.preferences || null;
@@ -71,7 +73,7 @@ export async function getUserPreferences(): Promise<UserPreference | null> {
 
 export async function updateUserPreferences(updates: Partial<UserPreference>): Promise<boolean> {
   try {
-    const response = await fetch('/api/preferences', {
+    const response = await fetch(apiUrl('/api/preferences'), {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -87,7 +89,7 @@ export async function updateUserPreferences(updates: Partial<UserPreference>): P
 export async function trackSearchQuery(query: string): Promise<void> {
   try {
     // 复用 learn 端点，search 也是一种学习行为
-    await fetch('/api/preferences/learn', {
+    await fetch(apiUrl('/api/preferences/learn'), {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -104,7 +106,7 @@ export async function learnFromActivity(activity: {
   price: number;
 }): Promise<void> {
   try {
-    await fetch('/api/preferences/learn', {
+    await fetch(apiUrl('/api/preferences/learn'), {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

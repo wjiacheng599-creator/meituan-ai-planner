@@ -6,6 +6,7 @@
  */
 
 import { useCallback, useRef } from 'react';
+import { apiUrl } from "./apiBase";
 
 export type BehaviorEventType =
   | 'select' // 选择活动
@@ -57,7 +58,7 @@ export function useBehaviorTracking() {
       }
 
       // fire-and-forget 上报
-      fetch('/api/behavior/track', {
+      fetch(apiUrl('/api/behavior/track'), {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

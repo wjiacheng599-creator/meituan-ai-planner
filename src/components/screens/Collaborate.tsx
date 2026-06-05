@@ -8,6 +8,7 @@
  * - 投票 → AI 重新规划闭环
  */
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { apiUrl } from "./apiBase";
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronLeft,
@@ -152,7 +153,7 @@ export default function Collaborate({
   const fetchVotes = useCallback(async () => {
     if (!shareSlug) return;
     try {
-      const res = await fetch(`/api/shares/${encodeURIComponent(shareSlug)}/votes`);
+      const res = await fetch(`${API_BASE}/api/shares/${encodeURIComponent(shareSlug)}/votes`);
       if (res.ok) {
         const data = await res.json();
         if (data.votes?.length > 0) {
@@ -192,7 +193,7 @@ export default function Collaborate({
 
     try {
       for (const v of votesToSubmit) {
-        await fetch(`/api/shares/${encodeURIComponent(shareSlug)}/vote`, {
+        await fetch(`${API_BASE}/api/shares/${encodeURIComponent(shareSlug)}/vote`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(v),
@@ -228,7 +229,7 @@ export default function Collaborate({
     );
 
     try {
-      const res = await fetch(`/api/shares/${encodeURIComponent(shareSlug)}/optimize`, {
+      const res = await fetch(`${API_BASE}/api/shares/${encodeURIComponent(shareSlug)}/optimize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

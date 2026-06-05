@@ -4,6 +4,7 @@
  * 提供图片选择、预览、识别功能。
  */
 import { useState, useCallback, useRef } from 'react';
+import { apiUrl } from "./apiBase";
 
 export interface ImagePreview {
   file: File;
@@ -59,7 +60,7 @@ export function useImageRecognition() {
       const base64 = imagePreview.dataUrl.split(',')[1];
       const mimeType = imagePreview.file.type;
 
-      const response = await fetch('/api/vision/recognize', {
+      const response = await fetch(apiUrl('/api/vision/recognize'), {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

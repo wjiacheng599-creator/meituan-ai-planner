@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
+import { apiUrl } from "./apiBase";
 import { useState, useEffect, useRef, Fragment, memo } from 'react';
+import { apiUrl } from "./apiBase";
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronLeft,
@@ -858,7 +860,7 @@ function ProfileEditor({
   // 加载 AI 偏好
   useEffect(() => {
     const ac = new AbortController();
-    fetch('/api/preferences', { credentials: 'include', signal: ac.signal })
+    fetch(apiUrl('/api/preferences'), { credentials: 'include', signal: ac.signal })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (editorMountedRef.current && data?.preferences) {
@@ -919,7 +921,7 @@ function ProfileEditor({
     const current = ((profile as unknown as Record<string, unknown>)[key] as string[]) || [];
     onChange({ [key]: [...current, tag] } as Partial<PersonProfile>);
     // 同步到后端偏好
-    fetch('/api/preferences', {
+    fetch(apiUrl('/api/preferences'), {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -936,7 +938,7 @@ function ProfileEditor({
     onChange({ [key]: [...current, value] } as Partial<PersonProfile>);
     setCustomInputs((prev) => ({ ...prev, [key]: '' }));
     // 同步到后端
-    fetch('/api/preferences', {
+    fetch(apiUrl('/api/preferences'), {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

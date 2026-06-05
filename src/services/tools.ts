@@ -1,4 +1,5 @@
 import type { Activity } from './ai';
+import { apiUrl } from "./apiBase";
 import {
   searchPOI,
   getMockPOI,
@@ -418,7 +419,7 @@ async function searchHotel(input: {
   try {
     const params = new URLSearchParams({ city, maxPrice: String(maxPrice) });
     if (keywords && keywords !== '酒店') params.set('keyword', keywords);
-    const res = await fetch(`/api/fliggy/hotels?${params}`, { credentials: 'include' });
+    const res = await fetch(`${API_BASE}/api/fliggy/hotels?${params}`, { credentials: 'include' });
     if (res.ok) {
       const data = await res.json();
       if (data.items?.length > 0) {

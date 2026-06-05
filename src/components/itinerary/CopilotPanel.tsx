@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import { apiUrl } from "./apiBase";
 import { motion, AnimatePresence } from 'motion/react';
+import { apiUrl } from "./apiBase";
 import type { Plan, Activity, CopilotMessage } from '../../services/ai';
 import { chatWithCopilot, generateAlternatives } from '../../services/ai';
 import { checkTripHealth, type TripAlert } from '../../services/ai/selfHealing';
@@ -376,7 +378,7 @@ export default memo(function CopilotPanel({
     if (!isOpen || !shareSlug) return;
     const fetchVotes = async () => {
       try {
-        const res = await fetch(`/api/shares/${encodeURIComponent(shareSlug)}/votes`);
+        const res = await fetch(`${API_BASE}/api/shares/${encodeURIComponent(shareSlug)}/votes`);
         if (res.ok) {
           const data = await res.json();
           if (data.summary?.total > 0) {

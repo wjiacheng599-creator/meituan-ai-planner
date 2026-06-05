@@ -5,6 +5,7 @@
  */
 
 import type { FailureReason } from '../components/itinerary/BookingFailureDialog';
+import { apiUrl } from "./apiBase";
 import type { Activity } from './ai';
 
 export interface PreCheckResult {
@@ -24,7 +25,7 @@ export async function preCheckActivity(
   memberCount?: number
 ): Promise<PreCheckResult> {
   try {
-    const response = await fetch('/api/availability/check', {
+    const response = await fetch(apiUrl('/api/availability/check'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

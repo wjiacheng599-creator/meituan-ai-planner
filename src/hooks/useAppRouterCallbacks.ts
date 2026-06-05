@@ -5,6 +5,7 @@
  * 统一管理导航、保存、分享等操作，减少 prop drilling。
  */
 import { useCallback, useRef } from 'react';
+import { apiUrl } from "./apiBase";
 import type { CopilotMessage, Plan } from '../services/ai';
 import type { Post } from '../types';
 import type { AppState } from '../contexts/AppStateContext';
@@ -426,7 +427,7 @@ export function useAppRouterCallbacks(state: AppState) {
     if (!state.plan) return;
     // 尝试创建 share，失败也不阻塞
     try {
-      const res = await fetch('/api/shares', {
+      const res = await fetch(apiUrl('/api/shares'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,5 +1,7 @@
 import { getActivityImage, getFeedImage } from '../imageLibrary';
+import { apiUrl } from "./apiBase";
 import { batchFetchPOIImages } from '../poiImageService';
+import { apiUrl } from "./apiBase";
 import { generatePlanViaServer, generatePlanStream } from '../serverApi';
 import { dataSource } from '../apiAdapter';
 import { isBrowserRuntime } from '../runtimeEnv';
@@ -88,7 +90,7 @@ async function buildUnifiedProfileContext(travelDNA?: TravelDNA | null): Promise
       timestamp: number;
     }> = [];
     try {
-      const res = await fetch('/api/behavior/stats', { credentials: 'include' });
+      const res = await fetch(apiUrl('/api/behavior/stats'), { credentials: 'include' });
       if (res.ok) {
         // 从 stats 中获取事件（简化版，完整版需要单独的 API）
         const stats = await res.json();
